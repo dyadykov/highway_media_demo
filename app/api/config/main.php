@@ -16,7 +16,22 @@ $params = array_merge(
 return [
     'id' => 'app-api',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        'on beforeRequest' => function ($event) use ($params) {
+            $response = Yii::$app->response;
+
+            $response->headers->add('Access-Control-Allow-Origin', '*');
+            $response->headers->add('Access-Control-Allow-Methods', '*');
+            $response->headers->add('Access-Control-Allow-Headers', '*');
+            $response->headers->add('Access-Control-Expose-Headers', '*');
+
+            if (Yii::$app->request->isOptions) {
+                $response->statusCode = 200;
+                $response->send();
+            }
+        }
+    ],
     'modules' => [
         'v1' => [
             'class' => Module::class,

@@ -7,7 +7,6 @@ namespace api\modules\v1\controllers;
 use common\models\WonderfulItem;
 use Yii;
 use yii\filters\AccessControl;
-use yii\filters\Cors;
 use yii\rest\ActiveController;
 
 class WonderfulItemController extends ActiveController
@@ -32,13 +31,6 @@ class WonderfulItemController extends ActiveController
                         },
                     ],
                 ],
-            ],
-            'corsFilter' => [
-                'class' => Cors::class,
-                'cors' => [
-                    'Origin' => ['*'],
-                    'Access-Control-Allow-Headers' => ['*'],
-                ]
             ],
         ]);
     }
