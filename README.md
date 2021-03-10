@@ -1,7 +1,8 @@
 # highway media
 
 1. Установка:
-    - docker-compose build && docker-compose up -d
+    - docker-compose build && docker-compose up -d && docker-compose ps
+    - если контейнер app не поднялся, в директории с приложением (./app) выполнить composer i
     - docker-compose exec php bash
     - php init --env=Development --overwrite=a
     - php yii migrate --interactive=0
