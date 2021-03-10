@@ -1,0 +1,206 @@
+openapi: 3.0.1
+info:
+  title: Swagger demo
+  description: 'demo'
+  termsOfService: http://localhost:3080
+  contact:
+    email: apiteam@demo.ru
+  version: latest
+externalDocs:
+  description: Find out more about demo
+  url: http://localhost:3080
+servers:
+  - url: http://localhost:4080/v1
+paths:
+  /wonderful-item:
+    get:
+      tags:
+        - Wonderful Item
+      summary: Найти Wonderful Item
+      description: Массив Wonderful Item
+      parameters:
+        - name: fields
+          in: query
+          description: Набор выдаваемых полей
+          required: false
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - id
+                - title
+                - description
+      responses:
+        200:
+          description: HTTP OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WonderfulItem'
+        400:
+          description: Invalid status value
+          content: { }
+      security:
+        - api_key: [ ]
+    post:
+      tags:
+        - Wonderful Item
+      summary: Запостить Wonderful Item
+      description: Добавить товар в БД
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WonderfulItemFields'
+      responses:
+        200:
+          description: HTTP OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WonderfulItem'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+
+      security:
+        - api_key: [ ]
+  /wonderful-item/{wonderfulItemId}:
+    get:
+      tags:
+        - Wonderful Item
+      summary: Найти 1 Wonderful Item
+      description: Returns a single Wonderful Item
+      parameters:
+        - name: wonderfulItemId
+          in: path
+          description: ID of Wonderful Item to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: HTTP OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WonderfulItem'
+        400:
+          description: Invalid ID supplied
+          content: { }
+        404:
+          description: Wonderful Item not found
+          content: { }
+      security:
+        - api_key: [ ]
+    put:
+      tags:
+        - Wonderful Item
+      summary: Обновить данные одного Wonderful Item
+      parameters:
+        - name: wonderfulItemId
+          in: path
+          description: ID of Wonderful Item that needs to be updated
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WonderfulItemFields'
+      responses:
+        200:
+          description: HTTP OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WonderfulItem'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        422:
+          description: Data Validation Failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationFailed'
+      security:
+        - api_key: [ ]
+    delete:
+      tags:
+        - Wonderful Item
+      summary: Удалить 1 Wonderful Item
+      parameters:
+        - name: wonderfulItemId
+          in: path
+          description: Wonderful Item id to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: { }
+        404:
+          description: Wonderful Item not found
+          content: { }
+      security:
+        - api_key: [ ]
+
+components:
+  schemas:
+
+    WonderfulItemFields:
+      type: object
+      properties:
+        title:
+          type: string
+          description: "бла бла бла"
+          example: 1
+        description:
+          type: string
+          description: "бла бла бла"
+          example: 1
+
+    WonderfulItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "бла бла бла"
+          example: 1
+        title:
+          type: string
+          description: "бла бла бла"
+          example: 1
+        description:
+          type: string
+          description: "бла бла бла"
+          example: 1
+
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: X-TESTAPI-TOKEN
+      in: header
+
+tags:
+  - name: Wonderful Item
+    description: Справочник Winderful Item
