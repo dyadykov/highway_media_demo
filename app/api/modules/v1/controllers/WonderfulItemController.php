@@ -8,6 +8,7 @@ use common\models\WonderfulItem;
 use Yii;
 use yii\filters\AccessControl;
 use yii\rest\ActiveController;
+use yii\web\HttpException;
 
 class WonderfulItemController extends ActiveController
 {
@@ -23,11 +24,18 @@ class WonderfulItemController extends ActiveController
                         'allow' => true,
                         'roles' => ['?'],
                         'matchCallback' => function ($rule, $action) {
-                            $condition = in_array(Yii::$app->request->getHeaders()['X-TESTAPI-TOKEN'], Yii::$app->params['tokens']);
-                            if ($condition) {
-                                return true;
+                            $headers = Yii::$app->request->getHeaders();
+                            if (!$headers['X-TESTAPI-TOKEN']) {
+                                throw new HttpException(403, 'Отсутствует токен X-TESTAPI-TOKEN');
                             }
-                            return false;
+
+                            $xTestApiToken = $headers['X-TESTAPI-TOKEN'];
+                            $tokens = Yii::$app->params['tokens'];
+
+                            if (!in_array($xTestApiToken, $tokens)) {
+                                throw new HttpException(403, 'Неправильный токен X-TESTAPI-TOKEN');
+                            }
+                            return true;
                         },
                     ],
                 ],

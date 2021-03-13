@@ -26,7 +26,8 @@ class WonderfulItem extends ActiveRecord
     {
         return [
             ['id', 'integer'],
-            [['title', 'description'], 'string']
+            [['title', 'description'], 'string',  'message' => '{attribute} должен быть строкой.'],
+            [['title', 'description'], 'required',  'message' => '{attribute} не может быть пустым.'],
         ];
     }
 

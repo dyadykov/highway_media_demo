@@ -66,6 +66,8 @@ return [
                     'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
                 ],
             ],
+            'class' => Response::class,
+            'format' => 'json',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
